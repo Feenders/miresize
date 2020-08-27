@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="content" method="upgrade">
+    <name>plg_content_miresize</name>
+    <author>Dirk Hoeschen - computer * daten * netze : feenders</author>
+    <creationDate>2020-08-25</creationDate>
+    <copyright>Copyright (c) 2020 computer * daten * netze : feenders. All rights reserved.</copyright>
+    <license>GNU/GPL v3</license>
+    <authorEmail>service@feenders.de</authorEmail>
+    <authorUrl>https://www.feenders.de</authorUrl>
+    <version>0.9</version>
+    <description>PLG_CONTENT_MIRESIZE_XML_DESCRIPTION</description>
+    <scriptfile>install/install.script.php</scriptfile>
+    <files>
+        <filename plugin="miresize">miresize.php</filename>
+        <filename>index.html</filename>
+        <filename>readme.md</filename>
+        <filename>license.txt</filename>
+        <folder>library</folder>
+        <folder>language</folder>
+        <folder>install</folder>
+    </files>
+   	<media folder="media" destination="plg_content_miresize">
+		<folder>css</folder>
+		<folder>js</folder>
+		<folder>images</folder>
+		<filename>index.html</filename>
+	</media>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_content_miresize.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_content_miresize.sys.ini</language>        
+        <language tag="de-DE">de-DE/de-DE.plg_content_miresize.ini</language>
+        <language tag="de-DE">de-DE/de-DE.plg_content_miresize.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="mode"
+                        type="list"
+                        label="PLG_CONTENT_MIRESIZE_MODE_LABEL"
+                        description="PLG_CONTENT_MIRESIZE_MODE_DESC"
+                        default="scale"
+                        size="1"
+                        class="span12 w-100"
+                >
+                    <option value="scale">PLG_CONTENT_MIRESIZE_MODE_SCALE</option>
+                    <option value="crop">PLG_CONTENT_MIRESIZE_MODE_CROP</option>
+                    <option value="fit">PLG_CONTENT_MIRESIZE_MODE_FIT</option>
+                </field>
+
+                <field name="width" type="text" default="800" label="PLG_CONTENT_MIRESIZE_WIDTH_LABEL"
+                       description="PLG_CONTENT_MIRESIZE_WIDTH_DESC" filter="integer"/>
+
+                <field name="height" type="text" default="600" label="PLG_CONTENT_MIRESIZE_HEIGHT_LABEL"
+                       description="PLG_CONTENT_MIRESIZE_HEIGHT_DESC" filter="integer"/>
+            </fieldset>
+            <fieldset name="advanced">
+                <field name="reset_thumbs" type="checkbox" label="PLG_CONTENT_MIRESIZE_RESET_LABEL"
+                       description="PLG_CONTENT_MIRESIZE_RESET_DESC" value="1" />
+
+                <field name="fit_bg" type="color" default="#219fb8" format="hex"
+                       label="PLG_CONTENT_MIRESIZE_FITBG_LABEL"
+                       description="PLG_CONTENT_MIRESIZE_FITBG_DESC" />
+
+                <field type="spacer" name="myspacer"  class="text-error lead" label="&lt;b&gt;Not yet implemented&lt;/b&gt;" />
+
+                <field name="img_quality" type="range" default="85" label="Image quality"
+                       description="scaled image quality from 40 to 95 in 5% Steps" min="40" max="95" step="5" />
+
+                <field name="img_watermark" type="checkbox" label="Watermark"
+                       description="Watermark images" value="1" />
+
+                <field name="img_lazyload" type="checkbox" label="Lazyload"
+                       description="Lazyload images. See Help" value="1" />
+
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+        <server type="extension" priority="1" name="JooDatabase Updates"><![CDATA[https://www.feenders.de/download/update/miresize.xml]]></server>
+    </updateservers>
+</extension>
