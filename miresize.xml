@@ -76,6 +76,6 @@
         </fields>
     </config>
     <updateservers>
-        <server type="extension" priority="1" name="JooDatabase Updates"><![CDATA[https://www.feenders.de/download/update/miresize.xml]]></server>
+        <server type="extension" priority="1" name="Magic Image Resize - Updates"><![CDATA[https://www.feenders.de/download/update/miresize.xml]]></server>
     </updateservers>
 </extension>
