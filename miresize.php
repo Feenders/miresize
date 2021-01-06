@@ -5,10 +5,10 @@
  *
  * @package	Magic image resize
  * @subpackage  Content.Miresize
- * @copyright	Copyright 2020 (C) computer.daten.netze::feenders. All rights reserved.
+ * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    0.9
+ * @version    1.0
  *
  **/
 
@@ -45,7 +45,7 @@ class plgContentMiResize extends JPlugin {
 	 * @return	boolean	True on success.
 	 */
 	public function onContentPrepare($context, &$row, &$params, $limitstart=0 ) {
-		// simple check for exitance
+		// simple check for existance
 		if (strpos($row->text,"data-resize=")!== false) {
 			return $this->_getNewContent($row, $params);
 		}
@@ -62,6 +62,12 @@ class plgContentMiResize extends JPlugin {
 		// find tags in content-text
 		$mir = new MiresizeImages();
 		$mir->bgcolor = $this->params->get('fit_bg','#666666');
+		$mir->quality = (int) $this->params->get('img_quality',85);
+		$mir->watermark = (int) $this->params->get('watermark',0);
+		if ($mir->watermark==1) {
+			$mir->watermark_alpha = (int) $this->params->get('watermark_alpha',50);
+			$mir->watermark_img = $this->params->get('watermark_img','media/plg_content_miresize/images/watermark.png');
+		}
 
 		preg_match_all('/(<img[^>]+>)/i',$row->text, $matches);
 		if (!empty($matches)) {
@@ -87,6 +93,10 @@ class plgContentMiResize extends JPlugin {
 					$image =  $mir->getThumb($src,$width,$height,$mode);
 					if (!empty($image)) {
 						$new_tag = str_replace($src, JUri::root(true).$image, $img);
+						// Ad lazyload attribute
+						if ($this->params->get('img_lazyload',0)==1) {
+							$new_tag = preg_replace('/<img /i','<img loading="lazy" ',$new_tag);
+						}
 						$row->text = str_replace( $img,$new_tag,$row->text);
 					}
 				}

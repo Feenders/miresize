@@ -19,11 +19,14 @@ class MiresizeImages  extends JHelper
 	// Jpeg Image Quality between 0 and 100 (no compression)
 	public $quality= 85;
 
+	// Overlay Watermark
+	public $watermark = 0;
+
 	// Watermak Image - Optional with complete path - must be a semitransparent png
-	public $watermark = "/media/plg_content_miresize/images/watermark.png";
+	public $watermark_img = "media/plg_content_miresize/images/watermark.png";
 
 	// Transparency for watermark between 0 an 100;
-	public $watermark_alpha = 10;
+	public $watermark_alpha = 50;
 
 	// Background color in rgb values for the passepartout 40 = dark gray
 	public $bgcolor = '#666666';
@@ -85,10 +88,9 @@ class MiresizeImages  extends JHelper
 	 * @param int $size_h - Destination height
 	 * @param string $mode (scale, crop, fit)
 	 * @param boolean $grayscale
-	 * @param boolean $watermark
 	 * @return boolean
 	 */
-	public function resizeImage($source,$destination, $size_w=200, $size_h=200, $mode="scale",$grayscale=false,$watermark=false) {
+	public function resizeImage($source,$destination, $size_w=200, $size_h=200, $mode="scale",$grayscale=false) {
 		try {
 			if (file_exists($source)) {
 				if ($imageinfo = getimagesize($source)) {
@@ -205,15 +207,23 @@ class MiresizeImages  extends JHelper
 			}
 
 			// watermark image
-			if ($watermark===true) {
-				if ($rWatermark = imagecreatefrompng($this->watermark)) {
-					$this->imagecopymergeAlpha($dst_img, $rWatermark, 0,0,0,0, $new_w,$new_h,((int)$this->watermark_alpha%100));
-					imagedestroy($rWatermark);
+			if ($this->watermark==1) {
+				// test watermark image dimensions and type
+				$imageinfo = getimagesize(JPATH_ROOT."/".$this->watermark_img);
+				if (!$imageinfo || $imageinfo[2]!=IMAGETYPE_PNG) {
+					error_log("ProcessImg: Watermark image must be PNG with alpha channel",0);
+				} else {
+					if ($rWatermark = imagecreatefrompng(JPATH_ROOT."/".$this->watermark_img)) {
+						$w_w =  ($imageinfo[0]<$new_w) ? $imageinfo[0] : $new_w;
+						$w_h =  ($imageinfo[1]<$new_h) ? $imageinfo[1] : $new_h;
+						$this->imagecopymergeAlpha($dst_img, $rWatermark, 0,0,0,0, $w_w,$w_h,((int)$this->watermark_alpha%100));
+						imagedestroy($rWatermark);
+					}
 				}
 			}
 
 			try {
-				if (!imagejpeg($dst_img, $destination, ((int)$this->quality%100))) {
+				if (!imagejpeg($dst_img, $destination, $this->quality)) {
 					throw new Exception("Can not create destination (".$dst_img.") Check path and acces rights");
 				}
 			} catch (Exception $e) {

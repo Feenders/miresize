@@ -695,6 +695,7 @@
 /templates/system/*
 /templates/index.html
 /tmp/*
+/dev/*
 /configuration.php
 /htaccess.txt
 /index.php

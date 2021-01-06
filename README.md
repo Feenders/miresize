@@ -1,6 +1,6 @@
 # Magic image resize
 
-| copyright | Copyright 2020 (C) computer.daten.netze::feenders. All rights reserved. |
+| copyright | Copyright 2020-2021 (C) computer.daten.netze::feenders. All rights reserved. |
 | --- | --- |
 | license | GNU/GPL v3, see LICENSE.txt |
 

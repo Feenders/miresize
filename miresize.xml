@@ -3,11 +3,11 @@
     <name>plg_content_miresize</name>
     <author>Dirk Hoeschen - computer * daten * netze : feenders</author>
     <creationDate>2020-08-25</creationDate>
-    <copyright>Copyright (c) 2020 computer * daten * netze : feenders. All rights reserved.</copyright>
+    <copyright>Copyright (c) 2020-2021 computer * daten * netze : feenders. All rights reserved.</copyright>
     <license>GNU/GPL v3</license>
     <authorEmail>service@feenders.de</authorEmail>
     <authorUrl>https://www.feenders.de</authorUrl>
-    <version>0.9</version>
+    <version>1.0</version>
     <description>PLG_CONTENT_MIRESIZE_XML_DESCRIPTION</description>
     <scriptfile>install/install.script.php</scriptfile>
     <files>
@@ -54,23 +54,29 @@
                        description="PLG_CONTENT_MIRESIZE_HEIGHT_DESC" filter="integer"/>
             </fieldset>
             <fieldset name="advanced">
-                <field name="reset_thumbs" type="checkbox" label="PLG_CONTENT_MIRESIZE_RESET_LABEL"
-                       description="PLG_CONTENT_MIRESIZE_RESET_DESC" value="1" />
 
                 <field name="fit_bg" type="color" default="#219fb8" format="hex"
                        label="PLG_CONTENT_MIRESIZE_FITBG_LABEL"
                        description="PLG_CONTENT_MIRESIZE_FITBG_DESC" />
 
-                <field type="spacer" name="myspacer"  class="text-error lead" label="&lt;b&gt;Not yet implemented&lt;/b&gt;" />
+                <field name="reset_thumbs" type="checkbox" label="PLG_CONTENT_MIRESIZE_RESET_LABEL"
+                       description="PLG_CONTENT_MIRESIZE_RESET_DESC" value="1" />
 
                 <field name="img_quality" type="range" default="85" label="Image quality"
-                       description="scaled image quality from 40 to 95 in 5% Steps" min="40" max="95" step="5" />
+                       description="Scaled image quality from 20 to 95 in 5% Steps" min="20" max="95" step="5" />
 
-                <field name="img_watermark" type="checkbox" label="Watermark"
-                       description="Watermark images" value="1" />
+                <field name="watermark" type="checkbox" label="Watermark"
+                       description="Overlay Watermark to images" value="1" />
+
+                <field name="watermark_img" type="media" directory="/media/plg_content_miresize/images/" accept="image/png"
+                       label="Watermark image" description="Your watermark image should be PNG and bigger than your screen. See /media/plg_content_miresize/images/watermark.png"
+                       preview="false" />
+
+                <field name="watermark_alpha" type="range" default="50" label="Watermark alpha"
+                       description="Alpha of the Watermark from 20 to 90 in 5% Steps" min="20" max="90" step="5" />
 
                 <field name="img_lazyload" type="checkbox" label="Lazyload"
-                       description="Lazyload images. See Help" value="1" />
+                       description="Lazyload images. Enable browser supported lazy loading" value="1" />
 
             </fieldset>
         </fields>
