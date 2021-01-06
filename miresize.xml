@@ -13,8 +13,8 @@
     <files>
         <filename plugin="miresize">miresize.php</filename>
         <filename>index.html</filename>
-        <filename>readme.md</filename>
-        <filename>license.txt</filename>
+        <filename>README.md</filename>
+        <filename>LICENSE</filename>
         <folder>library</folder>
         <folder>language</folder>
         <folder>install</folder>
