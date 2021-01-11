@@ -1,4 +1,4 @@
-# Magic image resize
+# Magic image resize for Joomla CMS
 
 | copyright | Copyright 2020-2021 (C) computer.daten.netze::feenders. All rights reserved. |
 | --- | --- |
