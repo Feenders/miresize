@@ -8,7 +8,7 @@
  * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.0
+ * @version    1.1
  *
  **/
 
@@ -90,6 +90,7 @@ class plgContentMiResize extends JPlugin {
 					if ($mode!="scale" && $mode!="crop" && $mode!="fit") {
 						$mode = $this->params->get('mode', 'scale');
 					}
+					// get thumbnail image
 					$image =  $mir->getThumb($src,$width,$height,$mode);
 					if (!empty($image)) {
 						$new_tag = str_replace($src, JUri::root(true).$image, $img);

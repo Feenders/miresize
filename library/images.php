@@ -1,10 +1,11 @@
 <?php
 /**
- * @version     1.0.0
- * @package     com_feender
- * @copyright   Copyright (C) 2014. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Dirk Hoeschen - Feenders <hoeschen@feenders.de> - http://www.feenders.de
+ * @package	Magic image resize
+ * @subpackage  Content.Miresize
+ * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
+ * @license		GNU/GPL, see LICENSE.txt
+ * @author		Dirk Hoeschen (hoeschen@feenders.de)
+ * @version    1.1
  */
 
 // No direct access
@@ -38,12 +39,13 @@ class MiresizeImages  extends JHelper
 	 * @param   int     $size_w
 	 * @param   int     $size_h
 	 * @param   string  $mode (scale,crop,fit)
+	 * @param   string  $format (jpg,webp)
 	 *
 	 * @return false|string
 	 *
 	 * @since 1.0
 	 */
-	public function getThumb($image,$size_w=480, $size_h=480, $mode="scale") {
+	public function getThumb(string $image,int $size_w=480, int $size_h=480, $mode="scale", string $format="jpg" ) {
 		try
 		{
 			$pp = pathinfo($image);
@@ -58,12 +60,17 @@ class MiresizeImages  extends JHelper
 			$thumb = $path.JFilterOutput::stringURLSafe($pp['filename']).".jpg";
 			if (!file_exists(JPATH_ROOT.$path) || !is_dir(JPATH_ROOT.$path)) {
 				if (!mkdir(JPATH_ROOT.$path,0775,true)) {
-					throw new Exception("Can not create ".$path.". Make shure the image folders are writable.");
+					throw new Exception("Can not create ".$path.". Make sure the image folders are writable.");
 				}
 			}
-			if (!file_exists(JPATH_ROOT.$thumb ))
-			{
-				$this->resizeImage(JPATH_ROOT . $image, JPATH_ROOT . $thumb, $size_w, $size_h, $mode);
+
+			// create hash for update check
+			$hash = md5_file(JPATH_ROOT.$image);
+			$hf =  JPATH_ROOT.$path.$hash.".md5";
+
+			if (!file_exists(JPATH_ROOT.$thumb ) || !file_exists($hf)) {
+				$this->resizeImage(JPATH_ROOT . $image, JPATH_ROOT . $thumb, $size_w, $size_h, $mode,$format);
+				touch($hf);
 			}
 		} catch (Exception $e) {
 			error_log("ProcessImg: ".$e->getMessage(),0);

@@ -2,19 +2,19 @@
 <extension version="3.1" type="plugin" group="content" method="upgrade">
     <name>plg_content_miresize</name>
     <author>Dirk Hoeschen - computer * daten * netze : feenders</author>
-    <creationDate>2020-08-25</creationDate>
+    <creationDate>2021-07-21</creationDate>
     <copyright>Copyright (c) 2020-2021 computer * daten * netze : feenders. All rights reserved.</copyright>
     <license>GNU/GPL v3</license>
     <authorEmail>service@feenders.de</authorEmail>
     <authorUrl>https://www.feenders.de</authorUrl>
-    <version>1.0</version>
+    <version>1.1</version>
     <description>PLG_CONTENT_MIRESIZE_XML_DESCRIPTION</description>
     <scriptfile>install/install.script.php</scriptfile>
     <files>
         <filename plugin="miresize">miresize.php</filename>
         <filename>index.html</filename>
-        <filename>README.md</filename>
-        <filename>LICENSE</filename>
+        <filename>readme.md</filename>
+        <filename>license.txt</filename>
         <folder>library</folder>
         <folder>language</folder>
         <folder>install</folder>

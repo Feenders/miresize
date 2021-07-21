@@ -1,10 +1,11 @@
 <?php
 /**
- * @version     1.0.0
- * @package     com_event
- * @copyright   Copyright (C) 2014. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Dirk Hoeschen - Feenders <hoeschen@feenders.de> - http://www.feenders.de
+ * @package	Magic image resize
+ * @subpackage  Content.Miresize
+ * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
+ * @license		GNU/GPL, see LICENSE.txt
+ * @author		Dirk Hoeschen (hoeschen@feenders.de)
+ * @version    1.1
  */
 
 // No direct access
