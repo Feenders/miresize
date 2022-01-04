@@ -5,10 +5,10 @@
  *
  * @package	Magic image resize
  * @subpackage  Content.Miresize
- * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
+ * @copyright	Copyright 2022 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.1
+ * @version    1.2
  *
  **/
 

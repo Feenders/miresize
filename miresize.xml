@@ -66,12 +66,12 @@
                        type="list"
                        label="PLG_CONTENT_MIRESIZE_FORMAT_LABEL"
                        description="PLG_CONTENT_MIRESIZE_FORMAT_DESC"
-                       default="jpg"
+                       default="webp"
                        size="1"
                        class="span12 w-100"
                 >
-                    <option value="jpg">JPEG</option>
                     <option value="webp">WebP</option>
+                    <option value="jpg">JPEG</option>
                 </field>
 
 
@@ -89,7 +89,7 @@
                        description="Alpha of the Watermark from 20 to 90 in 5% Steps" min="20" max="90" step="5" />
 
                 <field name="img_lazyload" type="checkbox" label="Lazyload"
-                       description="Lazyload images. Enable browser supported lazy loading" value="1" />
+                       description="Lazyload images. Enable browser supported lazy loading" default="1" value="1" />
 
             </fieldset>
         </fields>

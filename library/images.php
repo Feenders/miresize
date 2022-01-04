@@ -70,7 +70,7 @@ class MiresizeImages  extends JHelper
 
 		if (!file_exists(JPATH_ROOT.$thumb ) || !file_exists($hf)) {
 			$this->create(JPATH_ROOT.$image,JPATH_ROOT.$thumb,$size_w,$size_h,$mode,$format);
-			touch ( $hf);
+			touch($hf);
 		}
 		return JUri::root(true).$thumb;
 	}
@@ -212,7 +212,7 @@ class MiresizeImages  extends JHelper
 
 			// watermark image
 			if ($this->watermark==1) {
-				if ($rWatermark = imagecreatefrompng($this->watermark)) {
+				if ($rWatermark = imagecreatefrompng(JPATH_ROOT."/".$this->watermark_img)) {
 					self::imagecopymergeAlpha($dst_img, $rWatermark, 0,0,0,0, $new_w,$new_h,((int)$this->watermark_alpha%100));
 					imagedestroy($rWatermark);
 				}
