@@ -64,6 +64,7 @@ class plgContentMiResize extends JPlugin {
 		$mir->bgcolor = $this->params->get('fit_bg','#666666');
 		$mir->quality = (int) $this->params->get('img_quality',85);
 		$mir->watermark = (int) $this->params->get('watermark',0);
+		$format = $this->params->get('img_format','webp');
 		if ($mir->watermark==1) {
 			$mir->watermark_alpha = (int) $this->params->get('watermark_alpha',50);
 			$mir->watermark_img = $this->params->get('watermark_img','media/plg_content_miresize/images/watermark.png');
@@ -91,9 +92,9 @@ class plgContentMiResize extends JPlugin {
 						$mode = $this->params->get('mode', 'scale');
 					}
 					// get thumbnail image
-					$image =  $mir->getThumb($src,$width,$height,$mode);
+					$image =  $mir->getThumb($src,$width,$height,$mode,$format);
 					if (!empty($image)) {
-						$new_tag = str_replace($src, JUri::root(true).$image, $img);
+						$new_tag = str_replace($src, $image, $img);
 						// Ad lazyload attribute
 						if ($this->params->get('img_lazyload',0)==1) {
 							$new_tag = preg_replace('/<img /i','<img loading="lazy" ',$new_tag);

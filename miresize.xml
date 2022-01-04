@@ -2,19 +2,19 @@
 <extension version="3.1" type="plugin" group="content" method="upgrade">
     <name>plg_content_miresize</name>
     <author>Dirk Hoeschen - computer * daten * netze : feenders</author>
-    <creationDate>2021-07-21</creationDate>
-    <copyright>Copyright (c) 2020-2021 computer * daten * netze : feenders. All rights reserved.</copyright>
+    <creationDate>2022-01-04</creationDate>
+    <copyright>Copyright (c) 2020-2022 computer * daten * netze : feenders. All rights reserved.</copyright>
     <license>GNU/GPL v3</license>
     <authorEmail>service@feenders.de</authorEmail>
     <authorUrl>https://www.feenders.de</authorUrl>
-    <version>1.1</version>
+    <version>1.2</version>
     <description>PLG_CONTENT_MIRESIZE_XML_DESCRIPTION</description>
     <scriptfile>install/install.script.php</scriptfile>
     <files>
         <filename plugin="miresize">miresize.php</filename>
         <filename>index.html</filename>
-        <filename>readme.md</filename>
-        <filename>license.txt</filename>
+        <filename>README.md</filename>
+        <filename>LICENSE</filename>
         <folder>library</folder>
         <folder>language</folder>
         <folder>install</folder>
@@ -61,6 +61,19 @@
 
                 <field name="reset_thumbs" type="checkbox" label="PLG_CONTENT_MIRESIZE_RESET_LABEL"
                        description="PLG_CONTENT_MIRESIZE_RESET_DESC" value="1" />
+
+                <field name="img_format"
+                       type="list"
+                       label="PLG_CONTENT_MIRESIZE_FORMAT_LABEL"
+                       description="PLG_CONTENT_MIRESIZE_FORMAT_DESC"
+                       default="jpg"
+                       size="1"
+                       class="span12 w-100"
+                >
+                    <option value="jpg">JPEG</option>
+                    <option value="webp">WebP</option>
+                </field>
+
 
                 <field name="img_quality" type="range" default="85" label="Image quality"
                        description="Scaled image quality from 20 to 95 in 5% Steps" min="20" max="95" step="5" />

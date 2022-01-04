@@ -20,6 +20,9 @@ class MiresizeImages  extends JHelper
 	// Jpeg Image Quality between 0 and 100 (no compression)
 	public $quality= 85;
 
+	// Grayscale
+	public $grayscale = 0;
+
 	// Overlay Watermark
 	public $watermark = 0;
 
@@ -45,39 +48,31 @@ class MiresizeImages  extends JHelper
 	 *
 	 * @since 1.0
 	 */
-	public function getThumb(string $image,int $size_w=480, int $size_h=480, $mode="scale", string $format="jpg" ) {
-		try
-		{
-			$pp = pathinfo($image);
-			$pp['dirname'] = str_replace(JUri::root(false),"",$pp['dirname']);
-			$path = "/".trim($pp['dirname'],"/");
-			$image = $path."/".$pp['basename'];
-			if (!file_exists(JPATH_ROOT.$image) || !is_file(JPATH_ROOT.$image)) {
-				throw new Exception("Image ".$image." not found.");
-			}
-			$tfolder = "/.thumbs/".$size_w."-".$size_h."-".$mode[0]."/";
-			if (strpos($pp['dirname'],$tfolder)===false) $path .= $tfolder;
-			$thumb = $path.JFilterOutput::stringURLSafe($pp['filename']).".jpg";
-			if (!file_exists(JPATH_ROOT.$path) || !is_dir(JPATH_ROOT.$path)) {
-				if (!mkdir(JPATH_ROOT.$path,0775,true)) {
-					throw new Exception("Can not create ".$path.". Make sure the image folders are writable.");
-				}
-			}
+	public function getThumb($image,$size_w=480, $size_h=480, $mode="scale",$format="jpg") {
+		$image = urldecode($image);
+		$pp = pathinfo($image);
+		$path = "/".trim($pp['dirname'],"/");
+		$image = $path."/".$pp['basename'];
 
-			// create hash for update check
-			$hash = md5_file(JPATH_ROOT.$image);
-			$hf =  JPATH_ROOT.$path.$hash.".md5";
-
-			if (!file_exists(JPATH_ROOT.$thumb ) || !file_exists($hf)) {
-				$this->resizeImage(JPATH_ROOT . $image, JPATH_ROOT . $thumb, $size_w, $size_h, $mode,$format);
-				touch($hf);
+		// create thumb folder
+		$tfolder = "/.thumbs/".$size_w."-".$size_h."-".$mode[0]."/";
+		if (strpos($pp['dirname'],$tfolder)===false) $path .= $tfolder;
+		if (!file_exists(JPATH_ROOT.$path) || !is_dir(JPATH_ROOT.$path)) {
+			if (!mkdir(JPATH_ROOT.$path,0775,true)) {
+				throw new Exception("Can not create ".$path.". Make shure the image folders are writable.");
 			}
-		} catch (Exception $e) {
-			error_log("ProcessImg: ".$e->getMessage(),0);
-			return false;
 		}
+		$thumb = $path.JFilterOutput::stringURLSafe($pp['filename']).".".$format;
 
-		return $thumb;
+		// create hash for update check
+		$hash = md5_file(JPATH_ROOT.$image);
+		$hf =  JPATH_ROOT.$path.$hash.".md5";
+
+		if (!file_exists(JPATH_ROOT.$thumb ) || !file_exists($hf)) {
+			$this->create(JPATH_ROOT.$image,JPATH_ROOT.$thumb,$size_w,$size_h,$mode,$format);
+			touch ( $hf);
+		}
+		return JUri::root(true).$thumb;
 	}
 
 	/**
@@ -94,10 +89,10 @@ class MiresizeImages  extends JHelper
 	 * @param int $size_w - Destination width
 	 * @param int $size_h - Destination height
 	 * @param string $mode (scale, crop, fit)
-	 * @param boolean $grayscale
+	 * @param string $format
 	 * @return boolean
 	 */
-	public function resizeImage($source,$destination, $size_w=200, $size_h=200, $mode="scale",$grayscale=false) {
+	public function create($source,$destination, $size_w=200, $size_h=200, $mode="scale",$format="jpg") {
 		try {
 			if (file_exists($source)) {
 				if ($imageinfo = getimagesize($source)) {
@@ -125,7 +120,7 @@ class MiresizeImages  extends JHelper
 			return false;
 		}
 
-		if (isset($src_img)) {
+		if (isset($src_img) && !empty($src_img)) {
 			$src_width = $imageinfo[0];
 			$src_height = $imageinfo[1];
 			if($src_width>=$src_height) { // Aspect x>y
@@ -143,6 +138,7 @@ class MiresizeImages  extends JHelper
 					$new_h = abs(($size_w/$src_width)*$src_height);
 				}
 			}
+
 			switch ($mode) {
 				case "crop" : // Crop to target size
 					$dst_img = imagecreatetruecolor($size_w,$size_h);
@@ -194,8 +190,9 @@ class MiresizeImages  extends JHelper
 			$new_w = imagesx( $dst_img );
 			$new_h = imagesy( $dst_img );
 
+
 			// grayscale image
-			if ($grayscale===true) {
+			if ($this->grayscale==1) {
 				$bwimage= imagecreate($new_w,$new_h);
 				$palette = array();
 				//Creates the 256 color palette
@@ -215,22 +212,15 @@ class MiresizeImages  extends JHelper
 
 			// watermark image
 			if ($this->watermark==1) {
-				// test watermark image dimensions and type
-				$imageinfo = getimagesize(JPATH_ROOT."/".$this->watermark_img);
-				if (!$imageinfo || $imageinfo[2]!=IMAGETYPE_PNG) {
-					error_log("ProcessImg: Watermark image must be PNG with alpha channel",0);
-				} else {
-					if ($rWatermark = imagecreatefrompng(JPATH_ROOT."/".$this->watermark_img)) {
-						$w_w =  ($imageinfo[0]<$new_w) ? $imageinfo[0] : $new_w;
-						$w_h =  ($imageinfo[1]<$new_h) ? $imageinfo[1] : $new_h;
-						$this->imagecopymergeAlpha($dst_img, $rWatermark, 0,0,0,0, $w_w,$w_h,((int)$this->watermark_alpha%100));
-						imagedestroy($rWatermark);
-					}
+				if ($rWatermark = imagecreatefrompng($this->watermark)) {
+					self::imagecopymergeAlpha($dst_img, $rWatermark, 0,0,0,0, $new_w,$new_h,((int)$this->watermark_alpha%100));
+					imagedestroy($rWatermark);
 				}
 			}
 
 			try {
-				if (!imagejpeg($dst_img, $destination, $this->quality)) {
+				$f = ($format=="webp") ? "imagewebp" : "imagejpeg";
+				if (!$f($dst_img, $destination, ((int)$this->quality%100))) {
 					throw new Exception("Can not create destination (".$dst_img.") Check path and acces rights");
 				}
 			} catch (Exception $e) {
@@ -244,6 +234,7 @@ class MiresizeImages  extends JHelper
 		error_log("ProcessImg: Something went wrong",0);
 		return false;
 	}
+
 
 	/**
 	 * A fix to get a function like imagecopymerge WITH ALPHA SUPPORT
