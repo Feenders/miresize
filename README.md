@@ -1,4 +1,4 @@
-# Magic image resize 1.1
+# Magic image resize 1.2
 
 | copyright | Copyright 2020-2022 (C) computer.daten.netze::feenders. All rights reserved. |
 | --- |------------------------------------------------------------------------------|
