@@ -49,6 +49,7 @@ class MiresizeImages  extends JHelper
 	 * @since 1.0
 	 */
 	public function getThumb($image,$size_w=480, $size_h=480, $mode="scale",$format="jpg") {
+		$image = explode("#",$image)[0];
 		$image = urldecode($image);
 		$pp = pathinfo($image);
 		$path = "/".trim($pp['dirname'],"/");
@@ -66,11 +67,14 @@ class MiresizeImages  extends JHelper
 
 		// create hash for update check
 		$hash = md5_file(JPATH_ROOT.$image);
-		$hf =  JPATH_ROOT.$path.$hash.".md5";
+		$hf =  JPATH_ROOT.$path.$hash.$format.".md5";
 
 		if (!file_exists(JPATH_ROOT.$thumb ) || !file_exists($hf)) {
-			$this->create(JPATH_ROOT.$image,JPATH_ROOT.$thumb,$size_w,$size_h,$mode,$format);
-			touch($hf);
+			if ($this->create(JPATH_ROOT.$image,JPATH_ROOT.$thumb,$size_w,$size_h,$mode,$format)) {
+				touch($hf);
+			} else {
+				return false;
+			}
 		}
 		return JUri::root(true).$thumb;
 	}
@@ -106,8 +110,11 @@ class MiresizeImages  extends JHelper
 						case IMAGETYPE_GIF:
 							$src_img = imagecreatefromgif($source);
 							break;
+						case IMG_WEBP:
+							$src_img = imagecreatefromwebp($source);
+							break;
 						default:
-							throw new Exception("Image must be of type JPG, PNG or GIF.");
+							throw new Exception("Image must be of type JPG, PNG, WEBP or GIF.");
 					}
 				} else {
 					throw new Exception("Can not get imageinfo from (".$source."). Is it a image?");
@@ -288,6 +295,7 @@ class MiresizeImages  extends JHelper
 		}
 		// The image copy
 		imagecopy($dst_img, $src_img, $dst_x, $dst_y, $src_x, $src_y, $w, $h);
+		return true;
 	}
 
 }

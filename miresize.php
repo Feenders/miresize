@@ -5,16 +5,17 @@
  *
  * @package	Magic image resize
  * @subpackage  Content.Miresize
- * @copyright	Copyright 2022 (C) computer.daten.netze::feenders. All rights reserved.
+ * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.2
+ * @version    1.3
  *
  **/
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+use \Joomla\CMS\Factory;
 use Joomla\Registry\Registry;
 JLoader::register('MiresizeFunctions', JPATH_PLUGINS . '/content/miresize/library/functions.php');
 JLoader::register('MiresizeImages', JPATH_PLUGINS . '/content/miresize/library/images.php');
@@ -29,7 +30,7 @@ class plgContentMiResize extends JPlugin {
 			$rsh->clearThumbCache();
 			$this->params->set('reset_thumbs','0');
 			$pstring = json_encode($this->params);
-			$db = \Joomla\CMS\Factory::getDbo();
+			$db = Factory::getContainer()->get('DatabaseDriver');;
 			$db->setQuery("UPDATE `#__extensions` SET `params`=".$db->quote($pstring)." WHERE `type` LIKE 'plugin' AND `element` = 'miresize' AND `folder` = 'content'");
 			$db->execute();
 		}
@@ -96,7 +97,7 @@ class plgContentMiResize extends JPlugin {
 					if (!empty($image)) {
 						$new_tag = str_replace($src, $image, $img);
 						// Ad lazyload attribute
-						if ($this->params->get('img_lazyload',0)==1) {
+						if ($this->params->get('img_lazyload',1)==1) {
 							$new_tag = preg_replace('/<img /i','<img loading="lazy" ',$new_tag);
 						}
 						$row->text = str_replace( $img,$new_tag,$row->text);

@@ -1,6 +1,6 @@
-# Magic image resize 1.2
+# Magic image resize 1.3
 
-| copyright | Copyright 2020-2022 (C) computer.daten.netze::feenders. All rights reserved. |
+| copyright | Copyright 2020-2023 (C) computer.daten.netze::feenders. All rights reserved. |
 | --- |------------------------------------------------------------------------------|
 | license | GNU/GPL v3, see LICENSE.txt                                                  |
 
@@ -14,7 +14,7 @@ This will crop a image to exactly 250 x 128 pixels and put it into images/.thumb
 Images can be scaled, cropped or filled
 
 * data-resize="scale" - Scale the Image and keep aspect ratio. (default value)
-* data-resize="crop" - Crop the and center the image to the exact size. Ignore aspect.
+* data-resize="crop" - Crop and center the image to the exact size. Ignore aspect.
 * data-resize="fit" - Fit image to size and fill the rest with background color.
 
 If no special width or height attributes are provided MIResize uses the plugin default width and height. You can change default resize mode and dimensions by editing the plugin options. The options provide also a mechanism to clear the thumbs cache. Use the clear-tumbs function with care!
