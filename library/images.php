@@ -1,12 +1,16 @@
 <?php
 /**
+ *
+ * Plugin to resize content images automatically if tagged with a data-resize attribute
+ *
  * @package	Magic image resize
  * @subpackage  Content.Miresize
- * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
+ * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.1
- */
+ * @version    1.4
+ *
+ **/
 
 // No direct access
 defined('_JEXEC') or die;
@@ -103,15 +107,19 @@ class MiresizeImages  extends JHelper
 					switch($imageinfo[2]) {
 						case IMAGETYPE_JPEG:
 							$src_img = imagecreatefromjpeg($source);
+							$keep_tranparency = false;
 							break;
 						case IMAGETYPE_PNG:
 							$src_img = imagecreatefrompng($source);
+							$keep_tranparency = true;
 							break;
 						case IMAGETYPE_GIF:
 							$src_img = imagecreatefromgif($source);
+							$keep_tranparency = true;
 							break;
-						case IMG_WEBP:
+						case IMAGETYPE_WEBP:
 							$src_img = imagecreatefromwebp($source);
+							$keep_tranparency = true;
 							break;
 						default:
 							throw new Exception("Image must be of type JPG, PNG, WEBP or GIF.");
@@ -180,6 +188,10 @@ class MiresizeImages  extends JHelper
 						$dx = (int)(($size_w-$new_w)/2);
 					}
 					imagefill($dst_img, 0, 0, $color);
+					if ($keep_tranparency) {
+						imagealphablending($dst_img, false);
+						imagesavealpha($dst_img, true);
+					}
 					imagecopyresampled($dst_img,$src_img,$dx,$dy,0,0,$new_w,$new_h,$imageinfo[0],$imageinfo[1]);
 					break;
 				case "scale" : // Scale (keep aspect)
@@ -189,6 +201,10 @@ class MiresizeImages  extends JHelper
 						$new_w = $src_width;
 					}
 					$dst_img = imagecreatetruecolor($new_w,$new_h);
+					if ($keep_tranparency) {
+							imagealphablending($dst_img, false);
+							imagesavealpha($dst_img, true);
+					}		
 					imagecopyresampled($dst_img,$src_img,0,0,0,0,$new_w,$new_h,$imageinfo[0],$imageinfo[1]);
 					break;
 			}
@@ -200,7 +216,7 @@ class MiresizeImages  extends JHelper
 
 			// grayscale image
 			if ($this->grayscale==1) {
-				$bwimage= imagecreate($new_w,$new_h);
+				$bwimage = imagecreate($new_w,$new_h);
 				$palette = array();
 				//Creates the 256 color palette
 				for ($c=0;$c<256;$c++){ $palette[$c] = imagecolorallocate($bwimage,$c,$c,$c);}

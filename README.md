@@ -1,4 +1,4 @@
-# Magic image resize 1.3
+# Magic image resize plugin for Joomla
 
 | copyright | Copyright 2020-2023 (C) computer.daten.netze::feenders. All rights reserved. |
 | --- |------------------------------------------------------------------------------|
@@ -9,7 +9,7 @@ Resize content images automatically if tagged with a data-resize attribute.
 ```html
 <img src="images/myLargeImg.jpg" class="img-fluid" width="250" height="128" data-resize="crop" />
 ```
-This will crop a image to exactly 250 x 128 pixels and put it into images/.thumbs/250-128/myLargeImg.jpg. The data-resize attribute does the trick. The html Image src attribute will be replaced with the urls to the scaled version in the .thumbs - folder.
+This will crop an image to exactly 250 x 128 pixels and put it into images/.thumbs/250-128/myLargeImg.jpg. The data-resize attribute does the trick. The html Image src attribute will be replaced with the urls to the scaled version in the .thumbs - folder.
 
 Images can be scaled, cropped or filled
 
@@ -22,6 +22,8 @@ If no special width or height attributes are provided MIResize uses the plugin d
 Only the image source is replaced. This means can still use responsive classes  like img-fluid or img-responsive.
 
 The plugin will be activated automatically during installation.
+
+NOTE: Version 1.3 will not actively support joomla 3 anymore
 
 For help visit
 https://www.feenders.de/magic-image-resize.html

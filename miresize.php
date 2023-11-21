@@ -8,19 +8,23 @@
  * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.3
+ * @version    1.4
  *
  **/
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-use \Joomla\CMS\Factory;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Registry\Registry;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\String\StringHelper;
+
 JLoader::register('MiresizeFunctions', JPATH_PLUGINS . '/content/miresize/library/functions.php');
 JLoader::register('MiresizeImages', JPATH_PLUGINS . '/content/miresize/library/images.php');
 
-class plgContentMiResize extends JPlugin {
+class plgContentMiResize extends CMSPlugin {
 
 	public function __construct( &$subject, $config = array() ) {
 		parent::__construct( $subject, $config );
