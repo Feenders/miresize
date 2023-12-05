@@ -8,7 +8,7 @@
  * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.4
+ * @version    1.5
  *
  **/
 
@@ -17,8 +17,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Registry\Registry;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\String\StringHelper;
 
 JLoader::register('MiresizeFunctions', JPATH_PLUGINS . '/content/miresize/library/functions.php');

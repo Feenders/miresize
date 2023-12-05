@@ -1,13 +1,14 @@
 <?php
 /**
  *
- * Activates miresize plugin on install
+ * Plugin to resize content images automatically if tagged with a data-resize attribute
  *
- * @package		Magic image resize
- * @copyright	Copyright 2020 (C) computer.daten.netze::feenders. All rights reserved.
+ * @package	Magic image resize
+ * @subpackage  Content.Miresize
+ * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    0.9
+ * @version    1.5
  *
  **/
 
@@ -53,7 +54,7 @@ class PlgcontentmiresizeInstallerScript
 	 */
 	public function install($adapter) {
 				// Enable plugin
-		$db  = JFactory::getDbo();
+		$db  = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->update('#__extensions');
 		$query->set($db->quoteName('enabled') . ' = 1');

@@ -7,7 +7,7 @@
     <license>GNU/GPL v3</license>
     <authorEmail>service@feenders.de</authorEmail>
     <authorUrl>https://www.feenders.de</authorUrl>
-    <version>1.4</version>
+    <version>1.5</version>
     <description>PLG_CONTENT_MIRESIZE_XML_DESCRIPTION</description>
     <scriptfile>install/install.script.php</scriptfile>
     <files>

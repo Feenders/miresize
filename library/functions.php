@@ -1,12 +1,19 @@
 <?php
 /**
+ *
+ * Plugin to resize content images automatically if tagged with a data-resize attribute
+ *
  * @package	Magic image resize
  * @subpackage  Content.Miresize
- * @copyright	Copyright 2021 (C) computer.daten.netze::feenders. All rights reserved.
+ * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.1
- */
+ * @version    1.5
+ *
+ **/
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
 // No direct access
 defined('_JEXEC') or die;
@@ -26,13 +33,13 @@ class MiresizeFunctions
 	 *
 	 * @return string|string[]|null
 	 *
-	 * @since version
+	 * @since 0.9
 	 */
 	public function filterFilename($filename) {
 		$filename = trim($filename);
 		$filename = str_replace('-', ' ', $filename);
 
-		$lang = \JFactory::getLanguage();
+		$lang = Factory::getApplication()->getLanguage();
 		$filename = $lang->transliterate($filename);
 		$filename = preg_replace('/(\s|[^A-Za-z0-9\-\.])+/', '-', $filename);
 		$filename = trim($filename, '-');
@@ -67,7 +74,7 @@ class MiresizeFunctions
 	 */
 	public function clearThumbCache() {
 		$found = 0;
-		$cparams  = JComponentHelper::getParams('com_media');
+		$cparams  = ComponentHelper::getParams('com_media');
 		$it = new RecursiveDirectoryIterator(JPATH_SITE . '/' . $cparams->get('image_path'));
 		foreach(new RecursiveIteratorIterator($it) as $file)
 		{

@@ -8,17 +8,20 @@
  * @copyright	Copyright 2023 (C) computer.daten.netze::feenders. All rights reserved.
  * @license		GNU/GPL, see LICENSE.txt
  * @author		Dirk Hoeschen (hoeschen@feenders.de)
- * @version    1.4
+ * @version    1.5
  *
  **/
 
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Helper\CMSHelper;
+use Joomla\CMS\Filter\OutputFilter;
+
 /**
  * Images helper functions
  */
-class MiresizeImages  extends JHelper
+class MiresizeImages  extends CMSHelper
 {
 
 	// Jpeg Image Quality between 0 and 100 (no compression)
@@ -64,10 +67,10 @@ class MiresizeImages  extends JHelper
 		if (strpos($pp['dirname'],$tfolder)===false) $path .= $tfolder;
 		if (!file_exists(JPATH_ROOT.$path) || !is_dir(JPATH_ROOT.$path)) {
 			if (!mkdir(JPATH_ROOT.$path,0775,true)) {
-				throw new Exception("Can not create ".$path.". Make shure the image folders are writable.");
+				throw new Exception("Can not create ".$path.". Make sure the image folders are writable.");
 			}
 		}
-		$thumb = $path.JFilterOutput::stringURLSafe($pp['filename']).".".$format;
+		$thumb = $path.OutputFilter::stringURLSafe($pp['filename']).".".$format;
 
 		// create hash for update check
 		$hash = md5_file(JPATH_ROOT.$image);
